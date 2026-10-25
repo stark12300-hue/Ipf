@@ -26,6 +26,7 @@ import {
   Globe,
   Tag,
   Copy,
+  Trash2,
 } from 'lucide-react';
 
 export const AdminDashboard: React.FC = () => {
@@ -141,6 +142,34 @@ export const AdminDashboard: React.FC = () => {
       showToast({ type: 'error', title: 'Error', message: 'Failed to fetch inquiries' });
     } finally {
       setLoadingLeads(false);
+    }
+  };
+
+  // Delete a lead from the CRM and persist the change to GitHub.
+  const handleDeleteLead = async (lead: Inquiry) => {
+    if (!adminToken) return;
+    const confirmed = window.confirm(`Delete lead ${lead.id} for ${lead.fullName}? This cannot be undone.`);
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch(`/api/admin/inquiries/${encodeURIComponent(lead.id)}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${adminToken}` },
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to delete lead');
+      }
+      setInquiries((current) => current.filter((item) => item.id !== lead.id));
+      if (selectedLead?.id === lead.id) setSelectedLead(null);
+      await Promise.all([fetchInquiries(), fetchAnalytics()]);
+      showToast({ type: 'success', title: 'Lead Deleted', message: 'Lead was deleted from the CRM and saved to GitHub.' });
+    } catch (error) {
+      showToast({
+        type: 'error',
+        title: 'Delete Failed',
+        message: error instanceof Error ? error.message : 'Could not delete this lead.',
+      });
     }
   };
 
@@ -533,12 +562,22 @@ export const AdminDashboard: React.FC = () => {
                             </td>
 
                             <td className="py-3.5 px-4 text-right">
-                              <button
-                                onClick={() => openLeadModal(inq)}
-                                className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-[#0B192C] hover:text-white text-slate-800 font-bold text-xs transition"
-                              >
-                                Manage
-                              </button>
+                              <div className="inline-flex items-center gap-1.5">
+                                <button
+                                  onClick={() => openLeadModal(inq)}
+                                  className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-[#0B192C] hover:text-white text-slate-800 font-bold text-xs transition"
+                                >
+                                  Manage
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteLead(inq)}
+                                  title={`Delete ${inq.id}`}
+                                  aria-label={`Delete lead ${inq.id}`}
+                                  className="p-1.5 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-600 hover:text-white transition"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         );
