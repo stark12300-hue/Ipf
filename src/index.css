@@ -72,3 +72,85 @@ section { scroll-margin-top: 88px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+
+/* Stronger, clearly visible motion across the whole IPF website */
+@keyframes ipfRiseIn {
+  0% { opacity: 0; transform: translate3d(0, 28px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes ipfSlideInLeft {
+  0% { opacity: 0; transform: translate3d(-32px, 0, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes ipfSlideInRight {
+  0% { opacity: 0; transform: translate3d(32px, 0, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes ipfBorderGlow {
+  0%,100% { box-shadow: 0 0 0 rgba(59,130,246,0); }
+  50% { box-shadow: 0 0 28px rgba(59,130,246,.20); }
+}
+@keyframes ipfBackgroundDrift {
+  0%,100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes ipfIconBob {
+  0%,100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-4px) rotate(-3deg); }
+}
+
+/* Hero content enters in sequence */
+main > section:first-of-type h1,
+main > section:first-of-type h2 { animation: ipfRiseIn .85s cubic-bezier(.2,.75,.25,1) both; }
+main > section:first-of-type p { animation: ipfRiseIn .8s .12s cubic-bezier(.2,.75,.25,1) both; }
+main > section:first-of-type button { animation: ipfRiseIn .7s .2s cubic-bezier(.2,.75,.25,1) both; }
+main > section:first-of-type article,
+main > section:first-of-type [class*="rounded-2xl"],
+main > section:first-of-type [class*="rounded-3xl"] { animation: ipfRiseIn .75s .18s cubic-bezier(.2,.75,.25,1) both; }
+
+/* Every major page section gets a subtle entrance; cards lift on hover */
+main > section { animation: ipfRiseIn .7s cubic-bezier(.2,.75,.25,1) both; }
+main > section:nth-of-type(2) { animation-delay: .08s; }
+main > section:nth-of-type(3) { animation-delay: .14s; }
+main > section:nth-of-type(4) { animation-delay: .20s; }
+main > section:nth-of-type(5) { animation-delay: .26s; }
+main > section:nth-of-type(n+6) { animation-delay: .1s; }
+main section article,
+main section [data-motion-card] {
+  transition: transform .3s cubic-bezier(.2,.75,.25,1), box-shadow .3s ease, border-color .3s ease;
+}
+main section article:hover,
+main section [data-motion-card]:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(15,23,42,.13);
+}
+main section button:hover,
+main section a[class*="rounded"]:hover {
+  filter: brightness(1.06);
+}
+main section svg:not([data-no-motion]) { transition: transform .25s ease, filter .25s ease; }
+main section button:hover svg,
+main section a:hover svg { transform: translateX(3px); }
+main section .animate-pulse-glow { animation: ipfBorderGlow 3s ease-in-out infinite; }
+main section .animate-float { animation: ipfIconBob 3.8s ease-in-out infinite; }
+main section .animate-gradient-text {
+  background-size: 200% 200%;
+  animation: ipfBackgroundDrift 3.5s ease-in-out infinite;
+}
+main section [class*="bg-gradient-to-"] { background-size: 140% 140%; }
+main section button:focus-visible,
+main section a:focus-visible { outline: 3px solid rgba(56,189,248,.8); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  main > section,
+  main > section h1,
+  main > section h2,
+  main > section p,
+  main > section button,
+  main > section article,
+  main > section [class*="rounded-2xl"],
+  main > section [class*="rounded-3xl"] {
+    animation: none !important;
+  }
+}
