@@ -1,9 +1,9 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { dataStore } from './src/server/dataStore.ts';
-import { validateInquirySubmission, InquiryFormData, extractUTMParameters } from './src/utils/validation.ts';
+import { validateInquirySubmission, type InquiryFormData, extractUTMParameters } from './src/utils/validation.ts';
 
 dotenv.config();
 

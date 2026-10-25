@@ -159,10 +159,10 @@ export const ContactSection: React.FC = () => {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-900 border border-blue-200 text-xs font-bold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100 text-indigo-950 border border-indigo-200 text-xs font-black tracking-wider uppercase shadow-sm">
             <span>Direct Client Coordination</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B192C] tracking-tight font-display">
+          <h2 className="text-3xl sm:text-4xl font-black text-[#0B192C] tracking-tight font-display">
             Contact Our Advisory Desk
           </h2>
           <p className="text-slate-600 text-base leading-relaxed">
@@ -172,29 +172,31 @@ export const ContactSection: React.FC = () => {
 
         {/* Success Modal / Banner */}
         {submittedInquiry && (
-          <div className="mt-8 max-w-2xl mx-auto p-6 rounded-2xl bg-emerald-900 text-white shadow-xl border border-emerald-700 animate-fadeIn space-y-4">
+          <div className="mt-8 max-w-2xl mx-auto p-6 rounded-3xl bg-gradient-to-r from-emerald-950 via-teal-900 to-emerald-950 text-white shadow-2xl border-2 border-emerald-500 animate-fadeIn space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-400/40">
+                  <CheckCircle2 className="w-7 h-7" />
+                </div>
                 <div>
-                  <h3 className="text-lg font-bold">Inquiry Successfully Registered!</h3>
-                  <p className="text-xs text-emerald-200">Thank you, {submittedInquiry.name}. Your case has been logged.</p>
+                  <h3 className="text-lg font-black">Inquiry Successfully Registered!</h3>
+                  <p className="text-xs text-emerald-200 font-medium">Thank you, {submittedInquiry.name}. Your case has been logged.</p>
                 </div>
               </div>
               <button
                 onClick={() => setSubmittedInquiry(null)}
-                className="text-emerald-300 hover:text-white text-xs underline"
+                className="text-emerald-300 hover:text-white text-xs underline font-bold cursor-pointer"
               >
                 Close
               </button>
             </div>
 
-            <div className="p-4 rounded-xl bg-emerald-950/80 border border-emerald-800 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-emerald-950/90 border border-emerald-700/80 flex items-center justify-between shadow-inner">
               <div>
                 <span className="text-[11px] uppercase tracking-wider text-emerald-300 font-bold block">
                   Your Inquiry Reference ID
                 </span>
-                <span className="text-xl font-mono font-bold text-white tracking-wider">
+                <span className="text-xl sm:text-2xl font-mono font-black text-white tracking-wider">
                   {submittedInquiry.id}
                 </span>
               </div>
@@ -203,14 +205,14 @@ export const ContactSection: React.FC = () => {
                   navigator.clipboard.writeText(submittedInquiry.id);
                   showToast({ type: 'info', title: 'Copied to Clipboard' });
                 }}
-                className="p-2 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-emerald-200"
+                className="p-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-emerald-200 transition-transform active:scale-90 cursor-pointer shadow-md"
                 title="Copy Inquiry ID"
               >
                 <Copy className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-xs text-emerald-100 leading-relaxed">
+            <p className="text-xs text-emerald-100 leading-relaxed font-medium">
               An advisory specialist will review your details. For immediate assistance, quote this Inquiry ID directly to our WhatsApp desk.
             </p>
 
@@ -221,7 +223,7 @@ export const ContactSection: React.FC = () => {
                 )}`;
                 window.open(url, '_blank', 'noopener,noreferrer');
               }}
-              className="w-full py-2.5 rounded-xl bg-white text-emerald-950 font-bold text-xs uppercase tracking-wider shadow hover:bg-emerald-50 transition flex items-center justify-center gap-2"
+              className="w-full py-3.5 rounded-2xl bg-white text-emerald-950 font-black text-xs uppercase tracking-wider shadow-xl hover:bg-emerald-50 transition flex items-center justify-center gap-2.5 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
             >
               <MessageCircle className="w-4 h-4 text-[#25D366] fill-[#25D366]" />
               <span>Connect on WhatsApp With This Inquiry ID</span>
@@ -234,78 +236,79 @@ export const ContactSection: React.FC = () => {
           {/* Left Column: Direct Contact & Verified Office Details */}
           <div className="lg:col-span-5 space-y-6">
             
-            {/* Quick Contact Buttons Card */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+            {/* Quick Contact Buttons Card with Multi-Color Channels */}
+            <div className="p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-md space-y-4">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                 <span>Instant Communication Channels</span>
               </h3>
 
               <div className="space-y-3">
-                {/* WhatsApp Button */}
+                {/* WhatsApp Button with Emerald Glow */}
                 <button
                   onClick={handleWhatsApp}
-                  className="w-full p-4 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 hover:border-[#25D366] transition-all duration-200 hover:-translate-y-1 hover:shadow-md flex items-center justify-between group cursor-pointer"
+                  className="w-full p-4 rounded-2xl bg-emerald-50/80 hover:bg-emerald-100/90 border-2 border-emerald-200 hover:border-emerald-500 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-between group cursor-pointer"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-[#25D366] text-slate-950 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                      <MessageCircle className="w-5 h-5 fill-slate-950" />
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#25D366] to-[#128C7E] text-slate-950 flex items-center justify-center shadow-md group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                      <MessageCircle className="w-6 h-6 fill-slate-950" />
                     </div>
                     <div className="text-left">
-                      <div className="text-xs font-bold text-slate-900 group-hover:text-emerald-800 transition">
+                      <div className="text-xs font-black text-slate-900 group-hover:text-emerald-800 transition">
                         WhatsApp Advisory Desk
                       </div>
-                      <div className="text-xs text-slate-600 font-mono">
+                      <div className="text-xs text-slate-600 font-mono font-bold">
                         {config.whatsappNumber}
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-1 rounded">
-                    Active
+                  <span className="text-[11px] font-black text-emerald-800 bg-emerald-200/80 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    Online
                   </span>
                 </button>
 
-                {/* Call Team Button */}
+                {/* Call Team Button with Sapphire Glow */}
                 <button
                   onClick={handlePhoneCall}
-                  className="w-full p-4 rounded-xl bg-blue-50/70 hover:bg-blue-100/70 border border-blue-200 hover:border-blue-400 transition-all duration-200 hover:-translate-y-1 hover:shadow-md flex items-center justify-between group cursor-pointer"
+                  className="w-full p-4 rounded-2xl bg-blue-50/80 hover:bg-blue-100/90 border-2 border-blue-200 hover:border-blue-500 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-between group cursor-pointer"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                      <PhoneCall className="w-4 h-4" />
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                      <PhoneCall className="w-5 h-5 text-cyan-300 animate-pulse" />
                     </div>
                     <div className="text-left">
-                      <div className="text-xs font-bold text-slate-900 group-hover:text-blue-900 transition">
+                      <div className="text-xs font-black text-slate-900 group-hover:text-blue-900 transition">
                         Official Telephone Hotline
                       </div>
-                      <div className="text-xs text-slate-600 font-mono">
+                      <div className="text-xs text-slate-600 font-mono font-bold">
                         {config.contactNumber}
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-1 rounded">
-                    Call Now
+                  <span className="text-[11px] font-black text-blue-800 bg-blue-200/80 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    Call Desk
                   </span>
                 </button>
 
-                {/* Instagram Profile Button */}
+                {/* Instagram Profile Button with Sunset Gradient */}
                 <button
                   onClick={handleInstagram}
-                  className="w-full p-4 rounded-xl bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 border border-pink-200 hover:border-pink-400 transition-all duration-200 hover:-translate-y-1 hover:shadow-md flex items-center justify-between group cursor-pointer"
+                  className="w-full p-4 rounded-2xl bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50 hover:from-purple-100 hover:to-orange-100 border-2 border-pink-200 hover:border-pink-500 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-between group cursor-pointer"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shadow-sm">
-                      <Instagram className="w-5 h-5" />
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#bc1888] to-[#285AEB] text-white flex items-center justify-center shadow-md group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                      <Instagram className="w-6 h-6" />
                     </div>
                     <div className="text-left">
-                      <div className="text-xs font-bold text-slate-900 group-hover:text-purple-900 transition">
+                      <div className="text-xs font-black text-slate-900 group-hover:text-purple-900 transition">
                         Official Instagram Profile
                       </div>
-                      <div className="text-xs text-slate-600">
-                        {config.instagramHandle} • Educational Updates
+                      <div className="text-xs text-slate-600 font-medium">
+                        {config.instagramHandle} • Case Updates
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-purple-700 bg-purple-100 px-2 py-1 rounded flex items-center gap-1">
+                  <span className="text-[11px] font-black text-purple-800 bg-purple-200/80 px-2.5 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider">
                     <span>Visit</span>
                     <ExternalLink className="w-3 h-3" />
                   </span>
@@ -313,42 +316,49 @@ export const ContactSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Office & Operations Card */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-                Corporate Office Details
+            {/* Office & Operations Card with Indigo/Purple Theme */}
+            <div className="p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-md space-y-4">
+              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-indigo-600" />
+                <span>Corporate Office Details</span>
               </h3>
 
               <div className="space-y-3.5 text-xs text-slate-600">
                 <div className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                    <MapPin className="w-4 h-4" />
+                  </div>
                   <div>
-                    <strong className="text-slate-900 block mb-0.5">Physical Registered Office:</strong>
-                    <span>{config.officeAddress}</span>
+                    <strong className="text-slate-900 block mb-0.5 font-bold">Physical Registered Office:</strong>
+                    <span className="leading-relaxed">{config.officeAddress}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Clock className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                    <Clock className="w-4 h-4" />
+                  </div>
                   <div>
-                    <strong className="text-slate-900 block mb-0.5">Advisory Business Hours:</strong>
+                    <strong className="text-slate-900 block mb-0.5 font-bold">Advisory Business Hours:</strong>
                     <span>{config.businessHours}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Mail className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+                  <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5">
+                    <Mail className="w-4 h-4" />
+                  </div>
                   <div>
-                    <strong className="text-slate-900 block mb-0.5">Corporate Email:</strong>
-                    <a href={`mailto:${config.businessEmail}`} className="text-blue-700 underline font-medium">
+                    <strong className="text-slate-900 block mb-0.5 font-bold">Corporate Email:</strong>
+                    <a href={`mailto:${config.businessEmail}`} className="text-indigo-600 font-bold hover:underline">
                       {config.businessEmail}
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-slate-100 flex items-center gap-2 text-[11px] text-slate-500">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <div className="pt-2 border-t border-slate-100 flex items-center gap-2 text-[11px] text-slate-500 font-medium">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Appointments recommended for in-person document verification.</span>
               </div>
             </div>
@@ -356,12 +366,15 @@ export const ContactSection: React.FC = () => {
           </div>
 
           {/* Right Column: Secure Inquiry Submission Form */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-lg p-6 sm:p-8">
+          <div className="lg:col-span-7 bg-white rounded-3xl border-2 border-slate-200 shadow-xl p-6 sm:p-8 relative overflow-hidden">
+            {/* Vivid Top Accent Shimmer Bar */}
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 via-purple-600 to-emerald-400 animate-shimmer" />
+
             <div className="mb-6 border-b border-slate-100 pb-4">
-              <h3 className="text-xl font-bold text-slate-900">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900">
                 Request a Recovery Consultation
               </h3>
-              <p className="mt-1 text-xs text-slate-500">
+              <p className="mt-1 text-xs text-slate-500 font-medium leading-relaxed">
                 Please provide your contact information and details regarding your shares. All information is held in strict corporate confidence.
               </p>
             </div>
@@ -517,8 +530,8 @@ export const ContactSection: React.FC = () => {
               </div>
 
               {/* Strict Trust & Privacy Warning Box */}
-              <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 space-y-1">
-                <div className="flex items-center gap-1.5 font-bold">
+              <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 text-[11px] text-amber-950 space-y-1">
+                <div className="flex items-center gap-1.5 font-black text-amber-900">
                   <Lock className="w-3.5 h-3.5 text-amber-700" />
                   <span>Important Privacy & Security Standard</span>
                 </div>
@@ -528,14 +541,14 @@ export const ContactSection: React.FC = () => {
               </div>
 
               {/* Consent checkbox */}
-              <label className="flex items-start gap-2 cursor-pointer pt-1">
+              <label className="flex items-start gap-2.5 cursor-pointer pt-1">
                 <input
                   type="checkbox"
                   checked={consentGiven}
                   onChange={(e) => setConsentGiven(e.target.checked)}
-                  className="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  className="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
                 />
-                <span className="text-[11px] text-slate-600">
+                <span className="text-[11px] text-slate-600 font-medium">
                   I consent to receiving procedural guidance from Veritas Advisory via phone or WhatsApp regarding my inquiry in accordance with the Privacy Policy.
                 </span>
               </label>
@@ -543,17 +556,17 @@ export const ContactSection: React.FC = () => {
                 <p className="text-[11px] text-rose-600">{formErrors.consent}</p>
               )}
 
-              {/* Submit Button */}
+              {/* Colorful Vibrant Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 px-6 rounded-xl bg-[#0B192C] hover:bg-blue-900 text-white font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-black text-xs uppercase tracking-wider shadow-xl hover:shadow-indigo-950/40 transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50 hover:scale-[1.01] active:scale-[0.99]"
               >
                 {loading ? (
                   <span>Submitting Inquiry...</span>
                 ) : (
                   <>
-                    <Send className="w-4 h-4 text-emerald-400" />
+                    <Send className="w-4 h-4 text-cyan-300 animate-pulse" />
                     <span>Submit Recovery Inquiry For Folio Review</span>
                   </>
                 )}

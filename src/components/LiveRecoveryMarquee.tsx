@@ -20,16 +20,16 @@ const TICKER_ITEMS: TickerItem[] = [
 
 export const LiveRecoveryMarquee: React.FC = () => {
   return (
-    <div className="bg-[#07111E] border-y border-slate-800/80 py-2.5 overflow-hidden select-none relative z-20">
-      {/* Left/Right Fade Mask */}
-      <div className="absolute top-0 bottom-0 left-0 w-16 bg-gradient-to-r from-[#07111E] to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 bottom-0 right-0 w-16 bg-gradient-to-l from-[#07111E] to-transparent z-10 pointer-events-none" />
+    <div className="bg-gradient-to-r from-[#060D17] via-[#0C1B33] to-[#060D17] border-y border-blue-900/50 py-3 overflow-hidden select-none relative z-20 shadow-inner">
+      {/* Left/Right Fade Masks */}
+      <div className="absolute top-0 bottom-0 left-0 w-24 bg-gradient-to-r from-[#060D17] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-l from-[#060D17] to-transparent z-10 pointer-events-none" />
 
       <div className="flex items-center">
-        {/* Fixed Title Label */}
-        <div className="hidden md:flex items-center gap-1.5 px-4 text-[11px] font-bold uppercase tracking-wider text-emerald-400 shrink-0 bg-[#07111E] z-10 border-r border-slate-800">
-          <Activity className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-          <span>Case Updates</span>
+        {/* Fixed Title Label with Glowing Pulse */}
+        <div className="hidden md:flex items-center gap-2 px-5 text-xs font-black uppercase tracking-wider text-cyan-300 shrink-0 bg-[#060D17]/95 z-10 border-r border-blue-900/60 shadow-lg">
+          <Activity className="w-4 h-4 text-cyan-400 animate-pulse" />
+          <span className="font-display">Live Desk</span>
         </div>
 
         {/* Continuous Seamless Scrolling Track */}
@@ -37,28 +37,39 @@ export const LiveRecoveryMarquee: React.FC = () => {
           {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, index) => (
             <div
               key={index}
-              className="flex items-center gap-2.5 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-800 text-slate-300 hover:border-emerald-500/50 transition-colors shrink-0"
+              className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 hover:border-cyan-400 text-slate-200 transition-all duration-200 shrink-0 shadow-md hover:scale-105 cursor-default"
             >
               <span
-                className={`text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded ${
+                className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm ${
                   item.tag === 'IEPF Claim'
-                    ? 'bg-blue-950 text-blue-300 border border-blue-700/60'
+                    ? 'bg-gradient-to-r from-blue-950 to-cyan-950 text-cyan-300 border border-cyan-500/50'
                     : item.tag === 'Dividend Claim'
-                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-700/60'
+                    ? 'bg-gradient-to-r from-emerald-950 to-teal-950 text-emerald-300 border border-emerald-500/50'
                     : item.tag === 'Legal Heir'
-                    ? 'bg-purple-950 text-purple-300 border border-purple-700/60'
-                    : 'bg-amber-950 text-amber-300 border border-amber-700/60'
+                    ? 'bg-gradient-to-r from-purple-950 to-pink-950 text-purple-300 border border-purple-500/50'
+                    : 'bg-gradient-to-r from-amber-950 to-orange-950 text-amber-300 border border-amber-500/50'
                 }`}
               >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full animate-ping ${
+                    item.tag === 'IEPF Claim'
+                      ? 'bg-cyan-400'
+                      : item.tag === 'Dividend Claim'
+                      ? 'bg-emerald-400'
+                      : item.tag === 'Legal Heir'
+                      ? 'bg-purple-400'
+                      : 'bg-amber-400'
+                  }`}
+                />
                 {item.tag}
               </span>
 
-              <span className="font-bold text-white tracking-tight">{item.company}</span>
-              <span className="text-slate-500">•</span>
-              <span className="text-slate-400 text-[11px]">{item.scope}</span>
-              <span className="text-slate-500">•</span>
-              <span className="text-emerald-400 font-medium text-[11px] flex items-center gap-1">
-                <CheckCircle className="w-3 h-3 text-emerald-400" />
+              <span className="font-extrabold text-white tracking-tight">{item.company}</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-slate-300 text-[11px]">{item.scope}</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-emerald-400 font-bold text-[11px] flex items-center gap-1.5">
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
                 {item.status}
               </span>
             </div>

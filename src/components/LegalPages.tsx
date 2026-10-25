@@ -10,8 +10,8 @@ export const PrivacyPolicy: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         <div className="border-b border-slate-200 pb-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-bold uppercase mb-2">
-            <Lock className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 text-blue-800 text-xs font-bold uppercase mb-2 shadow-sm animate-badge-pop">
+            <Lock className="w-3.5 h-3.5 text-blue-600" />
             <span>Data Protection & Privacy</span>
           </div>
           <h1 className="text-3xl font-extrabold text-[#0B192C] font-display">
@@ -84,8 +84,8 @@ export const TermsOfService: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         <div className="border-b border-slate-200 pb-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-bold uppercase mb-2">
-            <ShieldCheck className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase mb-2 shadow-sm animate-badge-pop">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>Consultancy Terms & Disclosures</span>
           </div>
           <h1 className="text-3xl font-extrabold text-[#0B192C] font-display">

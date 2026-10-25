@@ -270,48 +270,57 @@ export const AdminDashboard: React.FC = () => {
   // If not logged in, render Secure Login Form
   if (!adminToken) {
     return (
-      <div className="min-h-screen bg-[#07111E] flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-[#0B192C] border border-slate-800 rounded-2xl p-8 shadow-2xl text-white space-y-6">
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 flex items-center justify-center mx-auto">
-              <Lock className="w-6 h-6" />
-            </div>
-            <h1 className="text-xl font-bold font-display">Veritas Staff CRM & Admin Portal</h1>
-            <p className="text-xs text-slate-400">
-              Authorized administrative access only. All sessions are logged and encrypted.
-            </p>
-          </div>
+      <div className="min-h-screen bg-[#07111E] flex items-center justify-center p-4 relative overflow-hidden">
+        {/* Ambient background glows */}
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none animate-float-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none animate-float-gentle" />
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                Administrator Password
-              </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter administrator password"
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
-              />
-            </div>
+        <div className="w-full max-w-md bg-gradient-to-b from-[#0C1A2E] to-[#081220] border border-cyan-500/30 rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6)] text-white space-y-6 relative z-10 backdrop-blur-md">
+          {/* Top rainbow accent line */}
+          <div className="h-1.5 w-full bg-gradient-to-r from-cyan-400 via-emerald-400 via-purple-400 to-amber-400 animate-shimmer-fast" />
 
-            {authError && (
-              <div className="p-3 rounded-lg bg-rose-950/80 border border-rose-800 text-rose-300 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0" />
-                <span>{authError}</span>
+          <div className="p-8 pt-6 space-y-6">
+            <div className="text-center space-y-2">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-cyan-400/40 text-cyan-300 flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(56,189,248,0.25)] animate-badge-pop">
+                <Lock className="w-7 h-7 text-cyan-400 animate-pulse-gentle" />
               </div>
-            )}
+              <h1 className="text-xl font-bold font-display text-white">Veritas Staff CRM & Admin Portal</h1>
+              <p className="text-xs text-slate-400">
+                Authorized administrative access only. All sessions are logged and encrypted.
+              </p>
+            </div>
 
-            <button
-              type="submit"
-              disabled={authLoading}
-              className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider transition shadow-lg cursor-pointer disabled:opacity-50"
-            >
-              {authLoading ? 'Verifying Session...' : 'Authenticate & Enter Portal'}
-            </button>
-          </form>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                  Administrator Password
+                </label>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter administrator password"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 text-white transition-all"
+                />
+              </div>
+
+              {authError && (
+                <div className="p-3 rounded-lg bg-rose-950/80 border border-rose-800 text-rose-300 text-xs flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{authError}</span>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={authLoading}
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] cursor-pointer disabled:opacity-50 hover:scale-[1.01] active:scale-[0.99]"
+              >
+                {authLoading ? 'Verifying Session...' : 'Authenticate & Enter Portal'}
+              </button>
+            </form>
+          </div>
 
 
         </div>
@@ -324,17 +333,19 @@ export const AdminDashboard: React.FC = () => {
     <div className="min-h-screen bg-slate-100 text-slate-900">
       
       {/* Top Admin Bar */}
-      <header className="bg-[#0B192C] text-white border-b border-slate-800 py-3.5 px-4 sm:px-8 shadow">
+      <header className="bg-[#0B192C] text-white border-b border-cyan-500/30 py-3.5 px-4 sm:px-8 shadow-lg relative overflow-hidden">
+        <div className="h-0.5 w-full bg-gradient-to-r from-cyan-400 via-emerald-400 via-purple-400 to-amber-400 animate-shimmer-fast absolute top-0 left-0" />
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
           <BrandLogo variant="navbar" />
 
           <div className="flex items-center gap-3">
-            <span className="text-xs text-slate-300 hidden sm:inline">
-              Logged in as <strong className="text-white">Admin</strong>
+            <span className="text-xs text-slate-300 hidden sm:inline flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span>Logged in as</span> <strong className="text-white font-bold px-2 py-0.5 rounded bg-blue-900/60 border border-blue-700/60 text-blue-300">Super Admin</strong>
             </span>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700 transition"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-950/60 hover:border-rose-500/40 text-xs font-semibold text-slate-200 border border-slate-700 transition-all cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5 text-rose-400" />
               <span>Logout</span>
@@ -347,55 +358,55 @@ export const AdminDashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+        <div className="flex flex-wrap gap-2.5 border-b border-slate-200 pb-3">
           <button
             onClick={() => setActiveTab('leads')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'leads'
-                ? 'bg-[#0B192C] text-white shadow'
-                : 'bg-white text-slate-600 hover:bg-slate-200 border border-slate-200'
+                ? 'bg-gradient-to-r from-[#0B192C] to-[#122846] text-white shadow-md border border-cyan-500/40 scale-[1.02]'
+                : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 hover:scale-[1.01]'
             }`}
           >
-            <Users className="w-4 h-4" />
+            <Users className={`w-4 h-4 ${activeTab === 'leads' ? 'text-cyan-400' : 'text-slate-500'}`} />
             <span>Inquiries CRM</span>
-            <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-blue-500 text-white">
+            <span className="ml-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm">
               {inquiries.length}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'analytics'
-                ? 'bg-[#0B192C] text-white shadow'
-                : 'bg-white text-slate-600 hover:bg-slate-200 border border-slate-200'
+                ? 'bg-gradient-to-r from-[#0B192C] to-[#122846] text-white shadow-md border border-emerald-500/40 scale-[1.02]'
+                : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 hover:scale-[1.01]'
             }`}
           >
-            <TrendingUp className="w-4 h-4" />
+            <TrendingUp className={`w-4 h-4 ${activeTab === 'analytics' ? 'text-emerald-400' : 'text-slate-500'}`} />
             <span>Channel Analytics</span>
           </button>
 
           <button
             onClick={() => setActiveTab('campaigns')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'campaigns'
-                ? 'bg-[#0B192C] text-white shadow'
-                : 'bg-white text-slate-600 hover:bg-slate-200 border border-slate-200'
+                ? 'bg-gradient-to-r from-[#0B192C] to-[#122846] text-white shadow-md border border-purple-500/40 scale-[1.02]'
+                : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 hover:scale-[1.01]'
             }`}
           >
-            <Share2 className="w-4 h-4" />
+            <Share2 className={`w-4 h-4 ${activeTab === 'campaigns' ? 'text-purple-400' : 'text-slate-500'}`} />
             <span>Ad URL Builder (UTM)</span>
           </button>
 
           <button
             onClick={() => setActiveTab('settings')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'settings'
-                ? 'bg-[#0B192C] text-white shadow'
-                : 'bg-white text-slate-600 hover:bg-slate-200 border border-slate-200'
+                ? 'bg-gradient-to-r from-[#0B192C] to-[#122846] text-white shadow-md border border-amber-500/40 scale-[1.02]'
+                : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 hover:scale-[1.01]'
             }`}
           >
-            <Settings className="w-4 h-4" />
+            <Settings className={`w-4 h-4 ${activeTab === 'settings' ? 'text-amber-400' : 'text-slate-500'}`} />
             <span>Company & Website Settings</span>
           </button>
         </div>

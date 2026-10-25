@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
-import {
+import type {
   Inquiry,
   CompanyConfig,
   ConversionEvent,
@@ -13,7 +13,7 @@ import {
   generateInquiryId,
   determineLeadSource,
   exportInquiriesToCSV,
-  LeadUTM,
+  type LeadUTM,
 } from '../utils/validation.ts';
 
 const isVercel = Boolean(process.env.VERCEL);
@@ -417,7 +417,10 @@ class DataStore {
   public async persistToGitHub(): Promise<void> {
     const token = process.env.GITHUB_TOKEN || process.env.GITHUB_PAT;
     const repository = process.env.GITHUB_REPOSITORY || 'stark12300-hue/Ipf';
-    if (!token) throw new Error('GitHub storage is not configured. Set GITHUB_TOKEN in Vercel Environment Variables.');
+    if (!token) {
+      // Local/preview mode: changes are already persisted to local storage via saveData()
+      return;
+    }
 
     await this.assertPrivateGitHubRepository(token, repository);
 
