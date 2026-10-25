@@ -120,8 +120,27 @@ app.post('/api/inquiries', rateLimit(15, 10 * 60 * 1000), async (req: Request, r
       message: 'Inquiry registered successfully. An advisory coordinator will review your folio details.',
     });
   } catch (err: any) {
-    console.error('Error in /api/inquiries:', err);
-    res.status(500).json({ success: false, error: 'Internal server error while recording inquiry' });
+    console.error('[CRM] Error while recording inquiry:', err);
+    const detail = String(err?.message || '');
+    if (/GITHUB_TOKEN|GitHub storage is not configured/i.test(detail)) {
+      return res.status(503).json({
+        success: false,
+        code: 'CRM_STORAGE_NOT_CONFIGURED',
+        error: 'CRM storage is not configured. Add GITHUB_TOKEN in Vercel Environment Variables to enable inquiry saving.',
+      });
+    }
+    if (/repository must be private/i.test(detail)) {
+      return res.status(503).json({
+        success: false,
+        code: 'CRM_STORAGE_REPOSITORY_PUBLIC',
+        error: 'CRM storage is blocked for privacy: make the GitHub repository private before accepting customer inquiries.',
+      });
+    }
+    return res.status(503).json({
+      success: false,
+      code: 'CRM_STORAGE_FAILED',
+      error: 'CRM could not save this inquiry. Check the GitHub token and repository Contents read/write permissions.',
+    });
   }
 });
 
