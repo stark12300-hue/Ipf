@@ -16,7 +16,8 @@ import {
   LeadUTM,
 } from '../utils/validation';
 
-const DATA_DIR = path.resolve(process.cwd(), 'data');
+const isVercel = Boolean(process.env.VERCEL);
+const DATA_DIR = isVercel ? path.join('/tmp', 'ipf_data') : path.resolve(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'database.json');
 
 const INITIAL_CONFIG: CompanyConfig = {
@@ -286,8 +287,12 @@ class DataStore {
   }
 
   private ensureDirectory() {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
+    try {
+      if (!fs.existsSync(DATA_DIR)) {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      }
+    } catch (err) {
+      console.warn('[DataStore] Notice: Directory creation skipped or read-only filesystem:', err);
     }
   }
 
@@ -305,6 +310,25 @@ class DataStore {
         };
       } catch (err) {
         console.error('Failed to read database.json, initializing fresh store:', err);
+      }
+    }
+
+    // Check project data/database.json for initial seed
+    const rootDataFile = path.resolve(process.cwd(), 'data', 'database.json');
+    if (rootDataFile !== DATA_FILE && fs.existsSync(rootDataFile)) {
+      try {
+        const raw = fs.readFileSync(rootDataFile, 'utf-8');
+        const parsed = JSON.parse(raw);
+        const seeded: DatabaseSchema = {
+          config: { ...INITIAL_CONFIG, ...(parsed.config || {}) },
+          inquiries: Array.isArray(parsed.inquiries) && parsed.inquiries.length > 0 ? parsed.inquiries : SEED_INQUIRIES,
+          conversions: Array.isArray(parsed.conversions) ? parsed.conversions : [],
+          adminSessionTokens: parsed.adminSessionTokens || {},
+        };
+        this.saveData(seeded);
+        return seeded;
+      } catch (err) {
+        console.warn('Could not read seed database from root directory:', err);
       }
     }
 
@@ -334,8 +358,12 @@ class DataStore {
   }
 
   private saveData(dataToSave: DatabaseSchema) {
-    this.ensureDirectory();
-    fs.writeFileSync(DATA_FILE, JSON.stringify(dataToSave, null, 2), 'utf-8');
+    try {
+      this.ensureDirectory();
+      fs.writeFileSync(DATA_FILE, JSON.stringify(dataToSave, null, 2), 'utf-8');
+    } catch (err) {
+      console.warn('[DataStore] Notice: Disk write skipped (ephemeral/serverless mode):', err);
+    }
   }
 
   public getConfig(): CompanyConfig {
