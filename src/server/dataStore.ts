@@ -366,6 +366,26 @@ class DataStore {
     }
   }
 
+  // Customer inquiries contain personal contact and share information.
+  // Never write CRM data to a public repository, even if the token has write access.
+  private async assertPrivateGitHubRepository(token: string, repository: string): Promise<void> {
+    const response = await fetch('https://api.github.com/repos/' + repository, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      throw new Error('GitHub repository check failed (' + response.status + '). Check GITHUB_REPOSITORY and token permissions.');
+    }
+    const details = await response.json() as { private?: boolean };
+    if (details.private !== true) {
+      throw new Error('CRM storage repository must be private before customer inquiries can be saved.');
+    }
+  }
+
   // GitHub JSON is the durable store for serverless deployments.
   public async syncFromGitHub(): Promise<void> {
     const token = process.env.GITHUB_TOKEN || process.env.GITHUB_PAT;
@@ -383,7 +403,7 @@ class DataStore {
     if (!response.ok) throw new Error(`GitHub data read failed (${response.status})`);
     const file = await response.json() as { content?: string };
     if (!file.content) throw new Error('GitHub CRM data file is empty or unreadable');
-    const decoded = Buffer.from(file.content.replace(/\\n/g, ''), 'base64').toString('utf8');
+    const decoded = Buffer.from(file.content.replace(/\s/g, ''), 'base64').toString('utf8');
     const parsed = JSON.parse(decoded) as Partial<DatabaseSchema>;
     this.data = {
       config: { ...INITIAL_CONFIG, ...(parsed.config || {}) },
@@ -398,6 +418,8 @@ class DataStore {
     const token = process.env.GITHUB_TOKEN || process.env.GITHUB_PAT;
     const repository = process.env.GITHUB_REPOSITORY || 'stark12300-hue/Ipf';
     if (!token) throw new Error('GitHub storage is not configured. Set GITHUB_TOKEN in Vercel Environment Variables.');
+
+    await this.assertPrivateGitHubRepository(token, repository);
 
     const endpoint = `https://api.github.com/repos/${repository}/contents/data/crm-database.json`;
     const headers = {
