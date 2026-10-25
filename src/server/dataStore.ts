@@ -8,13 +8,13 @@ import {
   AnalyticsSummary,
   InquiryStatus,
   LeadSource,
-} from '../types';
+} from '../types/index.ts';
 import {
   generateInquiryId,
   determineLeadSource,
   exportInquiriesToCSV,
   LeadUTM,
-} from '../utils/validation';
+} from '../utils/validation.ts';
 
 const isVercel = Boolean(process.env.VERCEL);
 const DATA_DIR = isVercel ? path.join('/tmp', 'ipf_data') : path.resolve(process.cwd(), 'data');
