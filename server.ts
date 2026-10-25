@@ -17,6 +17,17 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Refresh durable CRM state from GitHub before each API request.
+app.use('/api', async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    await dataStore.syncFromGitHub();
+    next();
+  } catch (error) {
+    console.error('[CRM] GitHub sync failed:', error);
+    res.status(503).json({ success: false, error: 'CRM data store is unavailable. Check the GitHub token and repository permissions.' });
+  }
+});
+
 // Simple in-memory rate limiting map
 const ipRateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const loginFailedAttempts = new Map<string, { count: number; lockUntil: number }>();
@@ -69,7 +80,7 @@ app.get('/api/config', (_req: Request, res: Response) => {
 });
 
 // 2. Submit Inquiry
-app.post('/api/inquiries', rateLimit(15, 10 * 60 * 1000), (req: Request, res: Response) => {
+app.post('/api/inquiries', rateLimit(15, 10 * 60 * 1000), async (req: Request, res: Response) => {
   try {
     const body: InquiryFormData = req.body;
     const validation = validateInquirySubmission(body);
@@ -101,6 +112,7 @@ app.post('/api/inquiries', rateLimit(15, 10 * 60 * 1000), (req: Request, res: Re
       utm: rawUtm,
     });
 
+    await dataStore.persistToGitHub();
     res.status(201).json({
       success: true,
       inquiryId: inquiry.id,
@@ -114,7 +126,7 @@ app.post('/api/inquiries', rateLimit(15, 10 * 60 * 1000), (req: Request, res: Re
 });
 
 // 3. Track Conversion Event (WhatsApp click, Call click, etc.)
-app.post('/api/track-conversion', rateLimit(60, 60 * 1000), (req: Request, res: Response) => {
+app.post('/api/track-conversion', rateLimit(60, 60 * 1000), async (req: Request, res: Response) => {
   try {
     const { eventType, channel, path: reqPath, utm } = req.body;
     if (!eventType) {
@@ -128,6 +140,7 @@ app.post('/api/track-conversion', rateLimit(60, 60 * 1000), (req: Request, res: 
       utm,
     });
 
+    await dataStore.persistToGitHub();
     res.json({ success: true, eventId: event.id });
   } catch (err: any) {
     res.status(500).json({ success: false, error: 'Failed to log conversion' });
@@ -137,7 +150,7 @@ app.post('/api/track-conversion', rateLimit(60, 60 * 1000), (req: Request, res: 
 // --- ADMIN API ROUTES ---
 
 // 4. Admin Login
-app.post('/api/admin/login', (req: Request, res: Response) => {
+app.post('/api/admin/login', async (req: Request, res: Response) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
   const now = Date.now();
   const attempt = loginFailedAttempts.get(ip);
@@ -158,6 +171,7 @@ app.post('/api/admin/login', (req: Request, res: Response) => {
   if (password === ADMIN_PASSWORD) {
     loginFailedAttempts.delete(ip);
     const token = dataStore.createSessionToken();
+    await dataStore.persistToGitHub();
     return res.json({
       success: true,
       token,
@@ -183,9 +197,10 @@ app.post('/api/admin/login', (req: Request, res: Response) => {
 });
 
 // 5. Admin Logout
-app.post('/api/admin/logout', requireAdminAuth, (req: Request, res: Response) => {
+app.post('/api/admin/logout', requireAdminAuth, async (req: Request, res: Response) => {
   const token = req.headers.authorization!.split(' ')[1];
   dataStore.revokeSessionToken(token);
+  await dataStore.persistToGitHub();
   res.json({ success: true, message: 'Logged out successfully' });
 });
 
@@ -201,7 +216,7 @@ app.get('/api/admin/inquiries', requireAdminAuth, (req: Request, res: Response) 
 });
 
 // 7. Update Inquiry Status & Internal Notes
-app.patch('/api/admin/inquiries/:id', requireAdminAuth, (req: Request, res: Response) => {
+app.patch('/api/admin/inquiries/:id', requireAdminAuth, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status, internalNotes } = req.body;
 
@@ -210,6 +225,7 @@ app.patch('/api/admin/inquiries/:id', requireAdminAuth, (req: Request, res: Resp
     return res.status(404).json({ success: false, error: 'Inquiry record not found' });
   }
 
+  await dataStore.persistToGitHub();
   res.json({ success: true, inquiry: updated });
 });
 
@@ -228,12 +244,29 @@ app.get('/api/admin/export', requireAdminAuth, (_req: Request, res: Response) =>
 });
 
 // 10. Update Company Config
-app.post('/api/admin/config', requireAdminAuth, (req: Request, res: Response) => {
+app.post('/api/admin/config', requireAdminAuth, async (req: Request, res: Response) => {
   try {
     const updated = dataStore.updateConfig(req.body);
+    await dataStore.persistToGitHub();
     res.json({ success: true, config: updated });
   } catch (err: any) {
     res.status(500).json({ success: false, error: 'Failed to update company configuration' });
+  }
+});
+
+
+// 11. Delete a lead permanently from the CRM dataset
+app.delete('/api/admin/inquiries/:id', requireAdminAuth, async (req: Request, res: Response) => {
+  try {
+    const deleted = dataStore.deleteInquiry(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ success: false, error: 'Inquiry record not found' });
+    }
+    await dataStore.persistToGitHub();
+    return res.json({ success: true, message: 'Inquiry deleted successfully' });
+  } catch (error) {
+    console.error('[CRM] Failed to delete inquiry:', error);
+    return res.status(500).json({ success: false, error: 'Could not save the deletion to GitHub. The lead was removed from the current instance; refresh and retry after fixing GitHub storage.' });
   }
 });
 
