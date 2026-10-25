@@ -366,6 +366,79 @@ class DataStore {
     }
   }
 
+  // GitHub JSON is the durable store for serverless deployments.
+  public async syncFromGitHub(): Promise<void> {
+    const token = process.env.GITHUB_TOKEN || process.env.GITHUB_PAT;
+    const repository = process.env.GITHUB_REPOSITORY || 'stark12300-hue/Ipf';
+    if (!token) return;
+
+    const response = await fetch(`https://api.github.com/repos/${repository}/contents/data/crm-database.json`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+      cache: 'no-store',
+    });
+    if (response.status === 404) {
+      await this.persistToGitHub();
+      return;
+    }
+    if (!response.ok) throw new Error(`GitHub data read failed (${response.status})`);
+    const file = await response.json() as { content?: string };
+    if (!file.content) throw new Error('GitHub CRM data file is empty or unreadable');
+    const decoded = Buffer.from(file.content.replace(/\\n/g, ''), 'base64').toString('utf8');
+    const parsed = JSON.parse(decoded) as Partial<DatabaseSchema>;
+    this.data = {
+      config: { ...INITIAL_CONFIG, ...(parsed.config || {}) },
+      inquiries: Array.isArray(parsed.inquiries) ? parsed.inquiries : [],
+      conversions: Array.isArray(parsed.conversions) ? parsed.conversions : [],
+      adminSessionTokens: parsed.adminSessionTokens || {},
+    };
+    this.saveData(this.data);
+  }
+
+  public async persistToGitHub(): Promise<void> {
+    const token = process.env.GITHUB_TOKEN || process.env.GITHUB_PAT;
+    const repository = process.env.GITHUB_REPOSITORY || 'stark12300-hue/Ipf';
+    if (!token) throw new Error('GitHub storage is not configured. Set GITHUB_TOKEN in Vercel Environment Variables.');
+
+    const endpoint = `https://api.github.com/repos/${repository}/contents/data/crm-database.json`;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+      'X-GitHub-Api-Version': '2022-11-28',
+    };
+    const current = await fetch(endpoint, { headers: { ...headers, 'Content-Type': 'application/vnd.github+json' }, cache: 'no-store' });
+    let sha: string | undefined;
+    if (current.ok) {
+      const file = await current.json() as { sha?: string };
+      sha = file.sha;
+    } else if (current.status !== 404) {
+      throw new Error(`GitHub data metadata request failed (${current.status})`);
+    }
+
+    const payload: Record<string, unknown> = {
+      message: 'Update CRM data from admin portal',
+      content: Buffer.from(JSON.stringify(this.data, null, 2), 'utf8').toString('base64'),
+    };
+    if (sha) payload.sha = sha;
+    const saved = await fetch(endpoint, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(payload),
+    });
+    if (!saved.ok) {
+      const detail = await saved.text();
+      throw new Error(`GitHub CRM save failed (${saved.status}): ${detail.slice(0, 240)}`);
+    }
+  }
+
+  public deleteInquiry(id: string): boolean {
+    const before = this.data.inquiries.length;
+    this.data.inquiries = this.data.inquiries.filter((inquiry) => inquiry.id !== id);
+    if (this.data.inquiries.length === before) return false;
+    this.saveData(this.data);
+    return true;
+  }
+
   public getConfig(): CompanyConfig {
     return this.data.config;
   }
