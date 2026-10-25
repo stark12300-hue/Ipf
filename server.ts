@@ -24,7 +24,19 @@ app.use('/api', async (_req: Request, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     console.error('[CRM] GitHub sync failed:', error);
-    res.status(503).json({ success: false, error: 'CRM data store is unavailable. Check the GitHub token and repository permissions.' });
+    const detail = String((error as any)?.message || '');
+    if (/repository must be private/i.test(detail)) {
+      return res.status(503).json({
+        success: false,
+        code: 'CRM_STORAGE_REPOSITORY_PUBLIC',
+        error: 'CRM storage is blocked for privacy: make the GitHub repository private before accepting customer inquiries.',
+      });
+    }
+    res.status(503).json({
+      success: false,
+      code: 'CRM_STORAGE_UNAVAILABLE',
+      error: 'CRM data store is unavailable. Check GITHUB_TOKEN and private-repository read/write access.',
+    });
   }
 });
 
