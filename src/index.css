@@ -110,18 +110,23 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Glass Panels with Colorful Accents */
+/* Solid panels: disable glass / frosted-glass effects */
 .glass-panel {
-  background: rgba(11,25,44,.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: #0B192C;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 1px solid rgba(255,255,255,.14);
 }
 .glass-card {
-  background: rgba(255,255,255,.96);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #FFFFFF;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 1px solid rgba(226,232,240,.9);
+}
+/* Disable any remaining backdrop blur site-wide */
+*, *::before, *::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 
 /* Site-wide micro-interactions with colorful feedback */
