@@ -1,0 +1,6 @@
+{
+  "name": "Veritas IPF Stock Recovery Advisory",
+  "description": "Professional IPF and IEPF stock recovery assistance, unclaimed dividend claiming, and physical share dematerialization consultation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
