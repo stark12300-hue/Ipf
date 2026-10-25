@@ -1,4 +1,4 @@
-import { LeadSource, InquiryStatus, LeadUTM } from '../utils/validation';
+import { LeadSource, InquiryStatus, LeadUTM } from '../utils/validation.ts';
 
 export type { LeadSource, InquiryStatus, LeadUTM };
 
