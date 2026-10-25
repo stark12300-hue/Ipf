@@ -263,7 +263,7 @@ export const AdminDashboard: React.FC = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter admin password (default: admin123)"
+                placeholder="Enter administrator password"
                 className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
               />
             </div>
@@ -284,9 +284,7 @@ export const AdminDashboard: React.FC = () => {
             </button>
           </form>
 
-          <div className="pt-2 text-center text-[11px] text-slate-500">
-            For local review, the default development password is <code className="text-slate-300 bg-slate-800 px-1.5 py-0.5 rounded">admin123</code>.
-          </div>
+
         </div>
       </div>
     );
