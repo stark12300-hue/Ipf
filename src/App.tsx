@@ -2,6 +2,7 @@ import React from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
+import { IEPFSearchSection } from './components/IEPFSearchSection';
 import { LiveRecoveryMarquee } from './components/LiveRecoveryMarquee';
 import { AboutSection } from './components/AboutSection';
 import { ServicesSection } from './components/ServicesSection';
@@ -90,6 +91,7 @@ function MainLayout() {
         {currentPage === 'home' && (
           <>
             <HeroSection />
+            <IEPFSearchSection />
             <LiveRecoveryMarquee />
             <AboutSection />
             <ServicesSection />
