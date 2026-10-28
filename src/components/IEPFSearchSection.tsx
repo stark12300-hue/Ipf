@@ -3,6 +3,16 @@ import { Search, ExternalLink, FileText, ShieldCheck, Building2, UserRound, Hash
 
 type SearchMode = 'company' | 'shareholder' | 'folio';
 
+const INDIAN_STATES_AND_UTS = [
+  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
+  'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka',
+  'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram',
+  'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana',
+  'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands',
+  'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir',
+  'Ladakh', 'Lakshadweep', 'Puducherry', 'Outside India / Other country',
+];
+
 export const IEPFSearchSection: React.FC = () => {
   const [mode, setMode] = useState<SearchMode>('company');
   const [company, setCompany] = useState('');
@@ -10,17 +20,17 @@ export const IEPFSearchSection: React.FC = () => {
   const [folio, setFolio] = useState('');
   const [stateName, setStateName] = useState('');
   const [searched, setSearched] = useState(false);
+  const [searchStatus, setSearchStatus] = useState<'idle' | 'unavailable'>('idle');
 
-  const officialSearchUrl = 'https://iepfa.gov.in/login';
   const officialHomeUrl = 'https://www.iepf.gov.in/content/iepf/global/master/Home/Home.html';
   const mcaUrl = 'https://www.mca.gov.in/content/mca/global/en/foportal/fologin.html';
 
   const submitSearch = (event: React.FormEvent) => {
     event.preventDefault();
     setSearched(true);
-    // Send the visitor directly to the real government portal. This site does not
-    // transmit or store the entered search details and does not fabricate results.
-    window.open(officialSearchUrl, '_blank', 'noopener,noreferrer');
+    // Never invent matches. An authorized IEPFA data/API connection must be configured
+    // before this page can return live government records.
+    setSearchStatus('unavailable');
   };
 
   return (
@@ -32,7 +42,7 @@ export const IEPFSearchSection: React.FC = () => {
           </span>
           <h2 className="mt-5 text-3xl sm:text-4xl font-black tracking-tight text-[#17345B]">Search for Unclaimed Shares & Dividends</h2>
           <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-600">
-            Choose a search type, then continue to the official IEPFA portal to check government records. For privacy, the details entered here stay in this page and are not sent to IEPFA automatically.
+            Choose a search type and enter the available details. State is selectable from the list. Live government-record matching will only be enabled when an authorized IEPFA data source is connected.
           </p>
         </div>
 
@@ -64,25 +74,27 @@ export const IEPFSearchSection: React.FC = () => {
                 {mode === 'shareholder' && <div>
                   <label htmlFor="iepf-shareholder" className="block text-sm font-semibold text-slate-700 mb-1.5">Shareholder name</label>
                   <input id="iepf-shareholder" value={shareholder} onChange={e => setShareholder(e.target.value)} required placeholder="Enter name as shown on share records" className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100" />
-                  <label htmlFor="iepf-state" className="block text-sm font-semibold text-slate-700 mt-4 mb-1.5">State / country of registered address</label>
-                  <input id="iepf-state" value={stateName} onChange={e => setStateName(e.target.value)} required placeholder="Enter state or country" className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100" />
                 </div>}
                 {mode === 'folio' && <div>
                   <label htmlFor="iepf-folio" className="block text-sm font-semibold text-slate-700 mb-1.5">Folio number / DP ID + Client ID</label>
                   <input id="iepf-folio" value={folio} onChange={e => setFolio(e.target.value)} required placeholder="Enter folio or demat reference" className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100" />
                 </div>}
+                <div>
+                  <label htmlFor="iepf-state" className="block text-sm font-semibold text-slate-700 mb-1.5">State / country of registered address</label>
+                  <select id="iepf-state" value={stateName} onChange={e => { setStateName(e.target.value); setSearched(false); setSearchStatus('idle'); }} className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100">
+                    <option value="">Select state / UT</option>
+                    {INDIAN_STATES_AND_UTS.map(state => <option key={state} value={state}>{state}</option>)}
+                  </select>
+                </div>
                 <button type="submit" className="w-full rounded-xl bg-[#17345B] hover:bg-[#234873] text-white px-5 py-3.5 text-sm font-bold flex items-center justify-center gap-2">
-                  <Search className="w-4 h-4" /> Continue to official IEPFA search
+                  <Search className="w-4 h-4" /> Search unclaimed records
                 </button>
               </form>
 
-              {searched && <div className="mt-5 rounded-2xl border border-amber-200 bg-[#FBF8F0] p-4" role="status">
-                <h4 className="font-bold text-[#17345B]">Official IEPFA portal opened in a new tab</h4>
-                <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                  {mode === 'company' ? `Use “Company Name & Demat ID / Folio Number” or the matching search option on the official portal for ${company}.` : mode === 'shareholder' ? `Use the official search options with the shareholder name and registered address details you entered.` : 'Use the official search facility with your folio number or DP ID and Client ID.'}
-                  {' '}Your entered details were not sent automatically. Enter them only on the official portal after verifying the website address. This website has not queried government records, so no match is implied.
-                </p>
-                <a href={officialSearchUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 font-bold text-sm text-[#17345B] underline underline-offset-4">Open official IEPFA search <ExternalLink className="w-4 h-4" /></a>
+              {searched && searchStatus === 'unavailable' && <div className="mt-5 rounded-2xl border border-amber-300 bg-[#FBF8F0] p-4" role="status" aria-live="polite">
+                <h4 className="font-bold text-[#17345B]">Live records are not connected yet</h4>
+                <p className="mt-1 text-sm leading-relaxed text-slate-600">Your search form responded, but this website does not currently have an authorized IEPFA database/API connection, so it cannot verify matches or return real share/dividend records. No result has been assumed, and your entered details have not been sent anywhere.</p>
+                <p className="mt-2 text-xs text-slate-500">Search criteria selected: {mode === 'company' ? `Company — ${company}` : mode === 'shareholder' ? `Shareholder — ${shareholder}` : `Folio / DP ID — ${folio}`}{stateName ? ` · ${stateName}` : ''}</p>
               </div>}
               <p className="mt-4 text-xs text-slate-500">Privacy tip: do not enter PAN, Aadhaar, OTPs, passwords or bank details here. Use sensitive details only on verified official portals.</p>
             </div>
