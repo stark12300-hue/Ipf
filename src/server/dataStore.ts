@@ -21,20 +21,20 @@ const DATA_DIR = isVercel ? path.join('/tmp', 'ipf_data') : path.resolve(process
 const DATA_FILE = path.join(DATA_DIR, 'database.json');
 
 const INITIAL_CONFIG: CompanyConfig = {
-  companyName: 'Veritas IPF Stock Recovery Advisory',
-  tagLine: 'Trusted Corporate Guidance for IEPF Claims & Physical Share Recovery',
-  contactNumber: '+91 98200 11223',
-  whatsappNumber: '+91 98200 11223',
-  businessEmail: 'advisory@veritasrecovery.in',
-  officeAddress: 'Level 7, Fortune Towers, Financial District, Bandra Kurla Complex (BKC), Mumbai, Maharashtra 400051',
-  businessHours: 'Mon - Fri: 9:30 AM - 6:30 PM IST | Sat: 10:00 AM - 3:00 PM IST',
-  instagramHandle: '@veritas_ipfrecovery',
-  instagramUrl: 'https://www.instagram.com/veritas_ipfrecovery',
+  companyName: 'Gopal Singh Parihar',
+  tagLine: 'IEPF Recovery Expert & Business Associate of Stockholding (A Central Government Company)',
+  contactNumber: '+91 94509 08004',
+  whatsappNumber: '+91 94509 08004',
+  businessEmail: 'gopaliepf@gmail.com',
+  officeAddress: 'Arail-82 New Nankari, IIT Kalyanpur, Kanpur, Uttar Pradesh - 208016',
+  businessHours: 'Mon - Sat: 9:00 AM - 7:00 PM IST',
+  instagramHandle: '@gopal_iepf_recovery',
+  instagramUrl: 'https://www.instagram.com',
   googleAdsId: 'AW-1122334455',
   metaPixelId: '998877665544332',
-  seoTitle: 'Veritas IPF Stock Recovery Advisory | Professional IEPF & Share Claims Assistance',
-  seoDescription: 'Explore the available recovery process, understand your options, and connect with our experienced team for assistance with IPF stock and unclaimed dividends.',
-  disclaimerNotice: 'Veritas Advisory is an independent corporate consulting firm providing documentation assistance and procedural guidance. We are not a government agency, not affiliated with the MCA or IEPF Authority, and never guarantee financial recovery or regulatory timelines.',
+  seoTitle: 'Gopal Singh Parihar | IEPF Recovery Expert & Stockholding Associate',
+  seoDescription: 'IEPF Recovery Expert & Business Associate of Stockholding (A Central Government Company). Unclaimed share retrieval, IEPF-5 claim assistance, physical share demat, duplicate certificates in Kanpur & across India.',
+  disclaimerNotice: 'Gopal Singh Parihar is an authorized Business Associate of Stockholding (A Central Government Company) providing procedural guidance and documentation assistance for IEPF share claims under MCA regulations.',
   services: [
     {
       id: 'srv-1',

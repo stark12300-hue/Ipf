@@ -44,7 +44,7 @@ export const FAQSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white via-slate-50 to-white text-slate-800 border-b border-slate-200 relative overflow-hidden">
+    <section id="faqs-section" className="py-16 sm:py-20 bg-gradient-to-b from-white via-slate-50 to-white text-slate-800 border-b border-slate-200 relative overflow-hidden scroll-mt-24">
       {/* Decorative ambient glows */}
       <div className="absolute top-1/3 -left-20 w-80 h-80 bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-2/3 -right-20 w-80 h-80 bg-purple-100/50 rounded-full blur-3xl pointer-events-none" />

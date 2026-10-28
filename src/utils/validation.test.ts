@@ -9,7 +9,7 @@ import {
   validateInquirySubmission,
   exportInquiriesToCSV,
   buildWhatsAppChatUrl,
-} from './validation';
+} from './validation.ts';
 
 test('validateContactNumber accepts valid mobile & phone formats', () => {
   assert.equal(validateContactNumber('+919876543210').valid, true);

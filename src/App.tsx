@@ -1,20 +1,12 @@
 import React from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Navbar } from './components/Navbar';
-import { HeroSection } from './components/HeroSection';
-import { IEPFSearchSection } from './components/IEPFSearchSection';
-import { LiveRecoveryMarquee } from './components/LiveRecoveryMarquee';
-import { AboutSection } from './components/AboutSection';
-import { ServicesSection } from './components/ServicesSection';
-import { CaseAssessmentTool } from './components/CaseAssessmentTool';
-import { HowItWorksSection } from './components/HowItWorksSection';
+import { IEPFPosterShowcase } from './components/IEPFPosterShowcase';
 import { FAQSection } from './components/FAQSection';
 import { ContactSection } from './components/ContactSection';
-import { InstagramBanner } from './components/InstagramBanner';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { AdLandingPage } from './components/AdLandingPage';
 import { AdminDashboard } from './components/AdminDashboard';
-import { PreLaunchChecklist } from './components/PreLaunchChecklist';
 import { PrivacyPolicy, TermsOfService } from './components/LegalPages';
 import { Footer } from './components/Footer';
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
@@ -83,95 +75,59 @@ function MainLayout() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+    <div className="min-h-screen flex flex-col bg-[#F4F6F9] text-slate-900 font-sans">
       <Navbar />
       <ToastContainer />
 
       <main className="flex-1">
         {currentPage === 'home' && (
           <>
-            <HeroSection />
-            <IEPFSearchSection />
-            <LiveRecoveryMarquee />
-            <AboutSection />
-            <ServicesSection />
-            <CaseAssessmentTool />
-            <HowItWorksSection />
+            <IEPFPosterShowcase />
             <FAQSection />
-            <InstagramBanner />
-            <ContactSection />
           </>
         )}
 
         {currentPage === 'services' && (
           <>
-            <div className="bg-[#0B192C] text-white py-12 px-4 text-center">
-              <h1 className="text-3xl font-bold font-display">Specialized Recovery Services</h1>
-              <p className="text-xs text-slate-300 mt-2 max-w-xl mx-auto">
-                Detailed procedural guidance for IEPF claims, lost share certificates, name mismatches, and legal heir succession.
-              </p>
-            </div>
-            <ServicesSection />
-            <CaseAssessmentTool />
-            <ContactSection />
+            <IEPFPosterShowcase />
+            <FAQSection />
           </>
         )}
 
         {currentPage === 'assessment' && (
           <>
-            <div className="bg-[#0B192C] text-white py-12 px-4 text-center">
-              <h1 className="text-3xl font-bold font-display">Check Case Eligibility & Document Requirements</h1>
-              <p className="text-xs text-slate-300 mt-2 max-w-xl mx-auto">
-                Understand the exact SEBI and MCA forms required for your specific share folio situation.
-              </p>
-            </div>
-            <CaseAssessmentTool />
-            <ServicesSection />
-            <ContactSection />
+            <IEPFPosterShowcase />
+            <FAQSection />
           </>
         )}
 
         {currentPage === 'how-it-works' && (
           <>
-            <div className="bg-[#0B192C] text-white py-12 px-4 text-center">
-              <h1 className="text-3xl font-bold font-display">Our 4-Step Recovery Process</h1>
-              <p className="text-xs text-slate-300 mt-2 max-w-xl mx-auto">
-                Structured, transparent, and compliant procedural workflow from inquiry to depository credit.
-              </p>
-            </div>
-            <HowItWorksSection />
+            <IEPFPosterShowcase />
             <FAQSection />
-            <ContactSection />
           </>
         )}
 
         {currentPage === 'faqs' && (
           <>
-            <div className="bg-[#0B192C] text-white py-12 px-4 text-center">
-              <h1 className="text-3xl font-bold font-display">Process & Procedural FAQs</h1>
-              <p className="text-xs text-slate-300 mt-2 max-w-xl mx-auto">
-                Authentic information answering common questions regarding IEPF stock recovery.
-              </p>
-            </div>
+            <IEPFPosterShowcase />
             <FAQSection />
-            <ContactSection />
           </>
         )}
 
         {currentPage === 'contact' && (
           <>
-            <div className="bg-[#0B192C] text-white py-12 px-4 text-center">
-              <h1 className="text-3xl font-bold font-display">Connect With Veritas Advisory</h1>
-              <p className="text-xs text-slate-300 mt-2 max-w-xl mx-auto">
-                Official phone hotline, WhatsApp desk, corporate office location, and inquiry submission.
+            <div className="bg-gradient-to-b from-blue-50/80 via-white to-slate-50 text-slate-900 py-10 px-4 text-center border-b border-slate-200">
+              <h1 className="text-3xl font-black font-display text-slate-950">Direct Consultation Desk</h1>
+              <p className="text-xs text-slate-600 mt-2 max-w-xl mx-auto">
+                Connect directly with Gopal Singh Parihar at IIT Kalyanpur, Kanpur or reach our WhatsApp desk immediately.
               </p>
             </div>
             <ContactSection />
-            <FAQSection />
+            <IEPFPosterShowcase />
           </>
         )}
 
-        {currentPage === 'checklist' && <PreLaunchChecklist />}
         {currentPage === 'privacy' && <PrivacyPolicy />}
         {currentPage === 'terms' && <TermsOfService />}
       </main>

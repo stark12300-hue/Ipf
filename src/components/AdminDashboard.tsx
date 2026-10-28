@@ -270,29 +270,29 @@ export const AdminDashboard: React.FC = () => {
   // If not logged in, render Secure Login Form
   if (!adminToken) {
     return (
-      <div className="min-h-screen bg-[#07111E] flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 relative overflow-hidden">
         {/* Ambient background glows */}
-        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none animate-float-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none animate-float-gentle" />
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-blue-200/50 rounded-full blur-[100px] pointer-events-none animate-float-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-200/40 rounded-full blur-[100px] pointer-events-none animate-float-gentle" />
 
-        <div className="w-full max-w-md bg-gradient-to-b from-[#0C1A2E] to-[#081220] border border-cyan-500/30 rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6)] text-white space-y-6 relative z-10 backdrop-blur-md">
-          {/* Top rainbow accent line */}
-          <div className="h-1.5 w-full bg-gradient-to-r from-cyan-400 via-emerald-400 via-purple-400 to-amber-400 animate-shimmer-fast" />
+        <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xl text-slate-900 space-y-6 relative z-10">
+          {/* Top accent line */}
+          <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600" />
 
           <div className="p-8 pt-6 space-y-6">
             <div className="text-center space-y-2">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-cyan-400/40 text-cyan-300 flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(56,189,248,0.25)] animate-badge-pop">
-                <Lock className="w-7 h-7 text-cyan-400 animate-pulse-gentle" />
+              <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center mx-auto shadow-xs">
+                <Lock className="w-7 h-7 text-blue-700 animate-pulse-gentle" />
               </div>
-              <h1 className="text-xl font-bold font-display text-white">Veritas Staff CRM & Admin Portal</h1>
-              <p className="text-xs text-slate-400">
+              <h1 className="text-xl font-bold font-display text-slate-950">Veritas Staff CRM & Admin Portal</h1>
+              <p className="text-xs text-slate-500">
                 Authorized administrative access only. All sessions are logged and encrypted.
               </p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
                   Administrator Password
                 </label>
                 <input
@@ -301,12 +301,12 @@ export const AdminDashboard: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter administrator password"
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 text-white transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 transition-all placeholder:text-slate-400"
                 />
               </div>
 
               {authError && (
-                <div className="p-3 rounded-lg bg-rose-950/80 border border-rose-800 text-rose-300 text-xs flex items-center gap-2">
+                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span>{authError}</span>
                 </div>
@@ -315,13 +315,12 @@ export const AdminDashboard: React.FC = () => {
               <button
                 type="submit"
                 disabled={authLoading}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] cursor-pointer disabled:opacity-50 hover:scale-[1.01] active:scale-[0.99]"
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-700 via-indigo-600 to-emerald-600 hover:from-blue-600 hover:to-emerald-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg cursor-pointer disabled:opacity-50 hover:scale-[1.01] active:scale-[0.99]"
               >
                 {authLoading ? 'Verifying Session...' : 'Authenticate & Enter Portal'}
               </button>
             </form>
           </div>
-
 
         </div>
       </div>
@@ -333,21 +332,21 @@ export const AdminDashboard: React.FC = () => {
     <div className="min-h-screen bg-slate-100 text-slate-900">
       
       {/* Top Admin Bar */}
-      <header className="bg-[#0B192C] text-white border-b border-cyan-500/30 py-3.5 px-4 sm:px-8 shadow-lg relative overflow-hidden">
-        <div className="h-0.5 w-full bg-gradient-to-r from-cyan-400 via-emerald-400 via-purple-400 to-amber-400 animate-shimmer-fast absolute top-0 left-0" />
+      <header className="bg-white text-slate-900 border-b border-slate-200 py-3.5 px-4 sm:px-8 shadow-xs relative overflow-hidden">
+        <div className="h-0.5 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600 absolute top-0 left-0" />
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
           <BrandLogo variant="navbar" />
 
           <div className="flex items-center gap-3">
-            <span className="text-xs text-slate-300 hidden sm:inline flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span>Logged in as</span> <strong className="text-white font-bold px-2 py-0.5 rounded bg-blue-900/60 border border-blue-700/60 text-blue-300">Super Admin</strong>
+            <span className="text-xs text-slate-600 hidden sm:inline flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+              <span>Logged in as</span> <strong className="text-blue-900 font-bold px-2 py-0.5 rounded bg-blue-100 border border-blue-200 text-blue-800">Super Admin</strong>
             </span>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-950/60 hover:border-rose-500/40 text-xs font-semibold text-slate-200 border border-slate-700 transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 text-xs font-semibold text-slate-700 border border-slate-300 transition-all cursor-pointer"
             >
-              <LogOut className="w-3.5 h-3.5 text-rose-400" />
+              <LogOut className="w-3.5 h-3.5 text-rose-500" />
               <span>Logout</span>
             </button>
           </div>
