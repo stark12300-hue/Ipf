@@ -11,14 +11,17 @@ export const IEPFSearchSection: React.FC = () => {
   const [stateName, setStateName] = useState('');
   const [searched, setSearched] = useState(false);
 
-  const submitSearch = (event: React.FormEvent) => {
-    event.preventDefault();
-    setSearched(true);
-  };
-
   const officialSearchUrl = 'https://iepfa.gov.in/login';
   const officialHomeUrl = 'https://www.iepf.gov.in/content/iepf/global/master/Home/Home.html';
   const mcaUrl = 'https://www.mca.gov.in/content/mca/global/en/foportal/fologin.html';
+
+  const submitSearch = (event: React.FormEvent) => {
+    event.preventDefault();
+    setSearched(true);
+    // Send the visitor directly to the real government portal. This site does not
+    // transmit or store the entered search details and does not fabricate results.
+    window.open(officialSearchUrl, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <section id="iepf-search" className="bg-[#FBF8F0] text-slate-800 py-16 sm:py-20 border-y border-amber-200">
@@ -29,7 +32,7 @@ export const IEPFSearchSection: React.FC = () => {
           </span>
           <h2 className="mt-5 text-3xl sm:text-4xl font-black tracking-tight text-[#17345B]">Search for Unclaimed Shares & Dividends</h2>
           <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-600">
-            Start with your company, shareholder or folio details. Official records are checked on the IEPFA portal; this tool does not invent or claim access to private government records.
+            Choose a search type, then continue to the official IEPFA portal to check government records. For privacy, the details entered here stay in this page and are not sent to IEPFA automatically.
           </p>
         </div>
 
@@ -69,15 +72,15 @@ export const IEPFSearchSection: React.FC = () => {
                   <input id="iepf-folio" value={folio} onChange={e => setFolio(e.target.value)} required placeholder="Enter folio or demat reference" className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100" />
                 </div>}
                 <button type="submit" className="w-full rounded-xl bg-[#17345B] hover:bg-[#234873] text-white px-5 py-3.5 text-sm font-bold flex items-center justify-center gap-2">
-                  <Search className="w-4 h-4" /> Show search instructions
+                  <Search className="w-4 h-4" /> Continue to official IEPFA search
                 </button>
               </form>
 
               {searched && <div className="mt-5 rounded-2xl border border-amber-200 bg-[#FBF8F0] p-4" role="status">
-                <h4 className="font-bold text-[#17345B]">Continue on the official IEPFA search</h4>
+                <h4 className="font-bold text-[#17345B]">Official IEPFA portal opened in a new tab</h4>
                 <p className="mt-1 text-sm leading-relaxed text-slate-600">
                   {mode === 'company' ? `Use “Company Name & Demat ID / Folio Number” or the matching search option on the official portal for ${company}.` : mode === 'shareholder' ? `Use the official search options with the shareholder name and registered address details you entered.` : 'Use the official search facility with your folio number or DP ID and Client ID.'}
-                  {' '}This website has not queried government records, so no match is implied.
+                  {' '}Your entered details were not sent automatically. Enter them only on the official portal after verifying the website address. This website has not queried government records, so no match is implied.
                 </p>
                 <a href={officialSearchUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 font-bold text-sm text-[#17345B] underline underline-offset-4">Open official IEPFA search <ExternalLink className="w-4 h-4" /></a>
               </div>}
