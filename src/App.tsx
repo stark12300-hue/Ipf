@@ -9,6 +9,8 @@ import { AdLandingPage } from './components/AdLandingPage';
 import { AdminDashboard } from './components/AdminDashboard';
 import { PrivacyPolicy, TermsOfService } from './components/LegalPages';
 import { Footer } from './components/Footer';
+import { LogoIntroAnimation } from './components/LogoIntroAnimation';
+import { LanguageSelectionModal } from './components/LanguageSelectionModal';
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
 
 function ToastContainer() {
@@ -52,30 +54,20 @@ function ToastContainer() {
 }
 
 function MainLayout() {
-  const { currentPage } = useApp();
-
-  if (currentPage === 'landing') {
-    return (
-      <main className="min-h-screen">
-        <AdLandingPage />
-        <FloatingWhatsApp />
-        <ToastContainer />
-      </main>
-    );
-  }
-
-  if (currentPage === 'admin') {
-    return (
-      <main className="min-h-screen">
-        <AdminDashboard />
-        <FloatingWhatsApp />
-        <ToastContainer />
-      </main>
-    );
-  }
+  const { currentPage, showLanguageModal, setLanguage } = useApp();
+  const [introFinished, setIntroFinished] = React.useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F4F6F9] text-slate-900 font-sans">
+      {/* Website Open Logo Animation */}
+      <LogoIntroAnimation onFinished={() => setIntroFinished(true)} />
+
+      {/* First-Time User Language Selection Modal (Asked only once) */}
+      <LanguageSelectionModal
+        isOpen={showLanguageModal && introFinished}
+        onSelectLanguage={setLanguage}
+      />
+
       <Navbar />
       <ToastContainer />
 

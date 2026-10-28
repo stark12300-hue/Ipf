@@ -1,4 +1,5 @@
 import React from 'react';
+import { useApp } from '../context/AppContext';
 
 interface BrandLogoProps {
   variant?: 'navbar' | 'large' | 'footer' | 'iconOnly';
@@ -11,6 +12,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
   showSubtitle = true,
 }) => {
+  const { language } = useApp();
   const isLarge = variant === 'large';
   const isFooter = variant === 'footer';
   const isIconOnly = variant === 'iconOnly';
@@ -128,12 +130,12 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
                 isLarge ? 'text-xl sm:text-2xl' : 'text-base sm:text-lg'
               }`}
             >
-              GOPAL SINGH PARIHAR
+              {language === 'hi' ? 'गोपाल सिंह परिहार' : 'GOPAL SINGH PARIHAR'}
             </span>
 
             {/* Official IEPF Expert Badge */}
             <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs">
-              IEPF EXPERT
+              {language === 'hi' ? 'आईईपीएफ विशेषज्ञ' : 'IEPF EXPERT'}
             </span>
           </div>
 
@@ -144,10 +146,12 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
                   isLarge ? 'text-[11px]' : 'text-[9.5px]'
                 }`}
               >
-                Stockholding Associate (A Central Govt Co.)
+                {language === 'hi'
+                  ? 'स्टॉकहोल्डिंग बिजनेस एसोसिएट (केंद्र सरकार की कंपनी)'
+                  : 'Stockholding Associate (A Central Govt Co.)'}
               </span>
               <span className="text-[10px] text-emerald-700 font-extrabold hidden sm:inline">
-                • IIT Kalyanpur, Kanpur
+                {language === 'hi' ? '• आईआईटी कल्याणपुर, कानपुर' : '• IIT Kalyanpur, Kanpur'}
               </span>
             </div>
           )}

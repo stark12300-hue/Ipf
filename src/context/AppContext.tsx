@@ -15,6 +15,8 @@ export type PageRoute =
   | 'terms'
   | 'checklist';
 
+import { translations, Language, TranslationStrings } from '../translations/translations';
+
 interface Toast {
   id: string;
   type: 'success' | 'error' | 'info';
@@ -37,6 +39,11 @@ interface AppContextType {
   setPreselectedService: (serviceTitle?: string) => void;
   adminToken: string | null;
   setAdminToken: (token: string | null) => void;
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: TranslationStrings;
+  showLanguageModal: boolean;
+  setShowLanguageModal: (show: boolean) => void;
 }
 
 const DEFAULT_CONFIG: CompanyConfig = {
@@ -69,6 +76,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [adminToken, setAdminTokenState] = useState<string | null>(() => {
     return localStorage.getItem('veritas_admin_token') || null;
   });
+
+  // Language state & first-time detection
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem('gsp_user_language_choice');
+    if (saved === 'hi' || saved === 'en') return saved;
+    return 'hi'; // Default friendly Hindi
+  });
+
+  const [showLanguageModal, setShowLanguageModal] = useState<boolean>(() => {
+    // Only ask first-time users who have not yet made a selection
+    const saved = localStorage.getItem('gsp_user_language_choice');
+    return !saved;
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('gsp_user_language_choice', lang);
+    setShowLanguageModal(false);
+  };
+
+  const t = translations[language] || translations.hi;
 
   const setAdminToken = (token: string | null) => {
     setAdminTokenState(token);
@@ -222,6 +250,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setPreselectedService,
         adminToken,
         setAdminToken,
+        language,
+        setLanguage,
+        t,
+        showLanguageModal,
+        setShowLanguageModal,
       }}
     >
       {children}
