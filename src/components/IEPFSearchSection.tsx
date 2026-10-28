@@ -23,6 +23,7 @@ export const IEPFSearchSection: React.FC = () => {
   const [searchStatus, setSearchStatus] = useState<'idle' | 'unavailable'>('idle');
 
   const officialHomeUrl = 'https://www.iepf.gov.in/content/iepf/global/master/Home/Home.html';
+  const officialSearchUrl = 'https://iepfa.gov.in/login';
   const mcaUrl = 'https://www.mca.gov.in/content/mca/global/en/foportal/fologin.html';
 
   const submitSearch = (event: React.FormEvent) => {
@@ -92,9 +93,10 @@ export const IEPFSearchSection: React.FC = () => {
               </form>
 
               {searched && searchStatus === 'unavailable' && <div className="mt-5 rounded-2xl border border-amber-300 bg-[#FBF8F0] p-4" role="status" aria-live="polite">
-                <h4 className="font-bold text-[#17345B]">Live records are not connected yet</h4>
-                <p className="mt-1 text-sm leading-relaxed text-slate-600">Your search form responded, but this website does not currently have an authorized IEPFA database/API connection, so it cannot verify matches or return real share/dividend records. No result has been assumed, and your entered details have not been sent anywhere.</p>
-                <p className="mt-2 text-xs text-slate-500">Search criteria selected: {mode === 'company' ? `Company — ${company}` : mode === 'shareholder' ? `Shareholder — ${shareholder}` : `Folio / DP ID — ${folio}`}{stateName ? ` · ${stateName}` : ''}</p>
+                <h4 className="font-bold text-[#17345B]">Search live records on the official IEPFA portal</h4>
+                <p className="mt-1 text-sm leading-relaxed text-slate-600">This website does not have an authorized live IEPFA database/API connection, so it cannot verify matches here. For actual government records, open the official IEPFA Search Facility and sign in or register. The details entered on this website are not sent to IEPFA.</p>
+                <p className="mt-2 text-xs text-slate-500">Your selected search: {mode === 'company' ? `Company — ${company}` : mode === 'shareholder' ? `Shareholder — ${shareholder}` : `Folio / DP ID — ${folio}`}{stateName ? ` · ${stateName}` : ''}</p>
+                <a href={officialSearchUrl} target="_blank" rel="noreferrer" className="mt-4 w-full rounded-xl bg-[#17345B] hover:bg-[#234873] text-white px-5 py-3 text-sm font-bold flex items-center justify-center gap-2"><ExternalLink className="w-4 h-4" /> Open official IEPFA Search Facility</a>
               </div>}
               <p className="mt-4 text-xs text-slate-500">Privacy tip: do not enter PAN, Aadhaar, OTPs, passwords or bank details here. Use sensitive details only on verified official portals.</p>
             </div>
