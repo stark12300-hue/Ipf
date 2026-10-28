@@ -194,3 +194,53 @@ button:not(:disabled)::after {
   animation: none !important;
   background-image: none !important;
 }
+
+
+/* IEPF reference-inspired light corporate theme: cream, navy and gold */
+body { background: #FBF8F0; color: #26364A; }
+header.sticky { background: #FFFFFF !important; color: #17345B !important; border-color: #E8D9B5 !important; box-shadow: 0 4px 18px rgba(23,52,91,.08) !important; }
+header.sticky [class*="bg-gradient-to-r from-[#060D17]"],
+header.sticky [class*="bg-[#0B192C]"],
+header.sticky [class*="bg-[#0A1626]"] { background: #FBF8F0 !important; color: #17345B !important; }
+header.sticky [class*="text-white"],
+header.sticky [class*="text-slate-100"],
+header.sticky [class*="text-slate-200"],
+header.sticky [class*="text-slate-300"] { color: #334155 !important; }
+header.sticky [class*="bg-slate-800"],
+header.sticky [class*="bg-slate-900"] { background: #FFFFFF !important; }
+header.sticky [class*="border-slate-800"],
+header.sticky [class*="border-slate-700"] { border-color: #E7DCC5 !important; }
+
+/* Convert the main home hero from dark glass styling to a clean light banner */
+main section[class*="from-[#060D17]"] {
+  background: linear-gradient(135deg, #FBF8F0 0%, #FFFFFF 62%, #F7F0DF 100%) !important;
+  color: #17345B !important;
+}
+main section[class*="from-[#060D17]"] [class*="text-white"],
+main section[class*="from-[#060D17]"] [class*="text-slate-100"],
+main section[class*="from-[#060D17]"] [class*="text-slate-200"],
+main section[class*="from-[#060D17]"] [class*="text-slate-300"] { color: #334155 !important; }
+main section[class*="from-[#060D17]"] [class*="bg-slate-900"],
+main section[class*="from-[#060D17]"] [class*="bg-slate-800"],
+main section[class*="from-[#060D17]"] [class*="bg-blue-950"],
+main section[class*="from-[#060D17]"] [class*="bg-[#0D1E36]"] {
+  background: #FFFFFF !important;
+  border-color: #E7DCC5 !important;
+  box-shadow: 0 8px 24px rgba(23,52,91,.07) !important;
+}
+main section[class*="from-[#060D17]"] [class*="border-slate-800"],
+main section[class*="from-[#060D17]"] [class*="border-slate-700"] { border-color: #E7DCC5 !important; }
+main section[class*="from-[#060D17]"] [class*="text-cyan-300"],
+main section[class*="from-[#060D17]"] [class*="text-cyan-400"],
+main section[class*="from-[#060D17]"] [class*="text-emerald-300"] { color: #9A6A12 !important; }
+
+/* Dark page title strips now use the same navy-on-cream palette */
+main [class*="bg-[#0B192C]"][class*="text-white"] {
+  background: #FBF8F0 !important;
+  color: #17345B !important;
+  border-bottom: 1px solid #E8D9B5;
+}
+main [class*="bg-[#0B192C]"][class*="text-white"] [class*="text-slate-300"] { color: #475569 !important; }
+
+/* Keep form controls legible on light pages */
+input, textarea, select { color-scheme: light; }
